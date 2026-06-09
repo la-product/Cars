@@ -1,22 +1,22 @@
 <?php
 class DbConnect
 {
-    private $server = 'db.db055.endora.cz';
-    private $dbname = 'kov1';
-    private $user = 'frenchik';
-    private $pass = 'Admin1234';
     private $options = array(
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_EMULATE_PREPARES => false,
     );
+
     public function connect()
     {
+        // načti .env
+        $env = parse_ini_file(__DIR__ . '/.env');
+
         try {
             $conn = new PDO(
-                'mysql:host=' . $this->server .
-                    ';dbname=' . $this->dbname . ';charset=utf8',
-                $this->user,
-                $this->pass,
+                'mysql:host=' . $env['DB_SERVER'] .
+                    ';dbname=' . $env['DB_NAME'] . ';charset=utf8',
+                $env['DB_USER'],
+                $env['DB_PASS'],
                 $this->options
             );
             return $conn;
@@ -24,5 +24,4 @@ class DbConnect
             echo "Database Error: " . $e->getMessage();
         }
     }
-
 }
